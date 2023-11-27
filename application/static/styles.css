@@ -1,0 +1,66 @@
+/* 1.0 - Foundational Styling */
+
+:root {
+  --primary:  #66C92D;
+  --text-light: #FFFFFF;
+  --text-dark: #101314;
+  --background: #667E8A;
+  --background-light: #E5E9EB;
+  height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  background: linear-gradient(
+    15deg, #ff97c0, #ffa964, #ffff8e, 	#00ffc8, #d26aff
+  );
+  background-size: 700% 550%;
+  animation: gradient 7s ease-in-out infinite;
+  color: var(--text-dark);
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--background-light);
+  box-sizing: border-box;
+  text-align: center;
+  width: 100%;
+}
+
+@keyframes gradient {
+  0% {
+	  background-position: 0% 79%;
+  }
+  50% {
+	  background-position: 100% 22%;
+  }
+  100% {
+	  background-position: 0% 79%;
+  }
+}
+
+html {
+  display: flex;
+  justify-content: center;
+}
+
+.prompt-button {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  margin-right: 4px;
+  border: 1px solid black;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 8px 16px 8px 12px;
+  width: 300px
+}
+
+.prompt {
+  padding: 5px;
+}
