@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% include 'head.html' %}
+{% include 'header.html' %}
+{% block content %}
+  <div class="main-container" style="padding-bottom:10px;">
+	  <h1> Here are your results! </h1>
+  <p></p>
+  <div class="results-container">
+  <h2> Key: </h2>
+	<h3> {{ session.output_key }} </h3>
+  <h2> Time Signature: </h2>
+	<h3> {{ session.output_signature }} </h3>
+  <h2> Theme: </h2>
+	<h3> {{ session.output_theme }} </h3>
+  </div>
+</div>
+
+{% endblock %}

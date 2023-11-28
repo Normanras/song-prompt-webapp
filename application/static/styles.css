@@ -47,6 +47,9 @@ html {
   display: flex;
   justify-content: center;
 }
+header {
+  height: 10%;
+}
 
 .prompt-button {
   background-color: rgba(255, 255, 255, 0.5);
@@ -63,4 +66,10 @@ html {
 
 .prompt {
   padding: 5px;
+}
+
+.results-container {
+  display: inline-block;
+  width: 60%;
+  text-align: center;
 }
