@@ -1,15 +1,3 @@
-<script>
-  function showPopup() {
-    var dialogShown = localStorage.getItem('dialogShown')
-    if (!dialogShown) {
-    setTimeout(function() {
-      document.querySelector(".popup-trigger").click()
-      console.log("showing popup")
-      localStorage.setItem('dialogShown', 1)
-    }, 500)}
-  }
-</script>
-
 <div
 	class="first-time-user-popup"
 	id="firstTimeUsers"
