@@ -48,16 +48,23 @@ def prompt_all():
     WORD_PROMPT = str(requests.get("https://random-word-api.herokuapp.com/word").text)[
         2:-2
     ]
+    SYSTEM_TEMPLATE = 'A single sentence based on a word.'
+    PROMPT_TEMPLATE = '### Instruction: {0} \n### Response: '
     if request.method == "POST":
         message = "Results are here"
         session["output_key"] = random.choice(KEYS) + random.choice(SIGN)
         session["output_signature"] = random.choice(TIME_SIGNATURES)
-        response = MODEL.generate(f"A single sentence about {WORD_PROMPT}", temp=0).splitlines().pop(0)
-        numresp = len(response)- 1
-        if numresp <= 1:
-            session["output_theme"] = str(response)
-        randresp = random.randrange(0, numresp)
-        session["output_theme"] = response
+        session["word_prompt"] = WORD_PROMPT
+        with MODEL.chat_session(SYSTEM_TEMPLATE, PROMPT_TEMPLATE):
+            response = MODEL.generate(f"A single sentence about {WORD_PROMPT}.", temp=0.7)
+            session["output_theme"] = str(response.splitlines()[0])
+
+
+        #  numresp = len(response)- 1
+        # if numresp <= 1:
+        #    session["output_theme"] = str(response)
+        # randresp = random.randrange(0, numresp)
+        # session["output_theme"] = response
         return render_template("single-button.html", title="Results", message=message)
     return render_template("single-button.html", title="Single Option")
 
