@@ -4,7 +4,8 @@ from pathlib import Path
 
 MODEL = GPT4All(
     model_name="gpt4all-falcon-q4_0.gguf",
-    model_path=(Path.home() / ".cache" / "gpt4all"),
+#    model_path=(Path.home() / ".cache" / "gpt4all"),
+# /root/.pyenv/versions/gpt-song-prompt/lib/python3.10/site-packages/gpt4all
     allow_download=True,
 )
 WORD_PROMPT = str(requests.get("https://random-word-api.herokuapp.com/word").text)[2:-2]

@@ -14,14 +14,17 @@ from gpt4all import GPT4All
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from application import app
+from werkzeug.middleware.profiler import ProfilerMiddleware
+
+app.wsgi_app = ProfilerMiddleware(app.wsgi_app, profile_dir="/root/flask-profiler/")
 
 app.config.update(SECRET_KEY=os.urandom(24))
 app.permanent_session_lifetime = timedelta(minutes=30)
 
 MODEL = GPT4All(
     model_name="gpt4all-falcon-q4_0.gguf",
-    model_path=(Path.home() / ".cache" / "gpt4all"),
-    allow_download=True,
+#    model_path=(Path.home() / ".cache" / "gpt4all"),
+    allow_download=False,
 )
 TIME_SIGNATURES = ["2/4", "3/4", "4/4", "2/2", "6/8", "9/8", "12/8"]
 
@@ -45,6 +48,7 @@ def main_prompt():
 
 @app.route("/all", methods=["GET", "POST"])
 def prompt_all():
+    print("Running Prompt_all func")
     WORD_PROMPT = str(requests.get("https://random-word-api.herokuapp.com/word").text)[
         2:-2
     ]
@@ -55,10 +59,12 @@ def prompt_all():
         session["output_key"] = random.choice(KEYS) + random.choice(SIGN)
         session["output_signature"] = random.choice(TIME_SIGNATURES)
         session["word_prompt"] = WORD_PROMPT
-        with MODEL.chat_session(SYSTEM_TEMPLATE, PROMPT_TEMPLATE):
-            response = MODEL.generate(f"A single sentence about {WORD_PROMPT}.", temp=0.7)
-            session["output_theme"] = str(response.splitlines()[0])
+        # with MODEL.chat_session(SYSTEM_TEMPLATE, PROMPT_TEMPLATE):
+        #     response = MODEL.generate(f"A single sentence about {WORD_PROMPT}.", temp=0.7)
+        #     session["output_theme"] = str(response.splitlines()[0])
 
+        response = MODEL.generate(f"Tell me about {WORD_PROMPT}.", temp=0.7, callback=stop_on_token_callback)
+        session["output_theme"] = response
 
         #  numresp = len(response)- 1
         # if numresp <= 1:
@@ -68,6 +74,11 @@ def prompt_all():
         return render_template("single-button.html", title="Results", message=message)
     return render_template("single-button.html", title="Single Option")
 
+def stop_on_token_callback(token_id, token_string):
+    if '.' in token_string:
+        return False
+    else:
+        return True
 
 @app.route("/")
 def prompt_instrument():
